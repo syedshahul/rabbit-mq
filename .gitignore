@@ -1,0 +1,14 @@
+# Maven build artifacts
+target
+java/out
+# IntelliJ project files
+.idea
+*.iml
+*.ipr
+*.iws
+
+# Eclipse files
+.project
+.settings
+.classpath
+bin
