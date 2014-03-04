@@ -1,6 +1,7 @@
 # Maven build artifacts
 target
 java/out
+java/test*
 # IntelliJ project files
 .idea
 *.iml
@@ -12,3 +13,10 @@ java/out
 .settings
 .classpath
 bin
+test-output
+
+# Vim temporary files
+*.swp
+
+# Sublime files
+*.sublime-*
