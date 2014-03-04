@@ -16,10 +16,10 @@ public class Recvr1 {
 		       InterruptedException {
 
 		ConnectionFactory factory = new ConnectionFactory();
-		factory.setHost("localhost");
-		factory.setVirtualHost("/");
-		factory.setUsername("guestq");
-		factory.setPassword("guestq");
+		factory.setHost(System.getenv("HOST"));
+		factory.setVirtualHost(System.getenv("VHOST"));
+		factory.setUsername(System.getenv("UNAME"));
+		factory.setPassword(System.getenv("PASSCODE"));
 		Connection connection = factory.newConnection();
 		Channel channel = connection.createChannel();
 
