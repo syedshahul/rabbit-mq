@@ -9,7 +9,7 @@ import com.rabbitmq.client.QueueingConsumer;
  * @author: Syed Shahul
  */
 public class Recvr1 {
-	private final static String QUEUE_NAME = "myfirstqueue";
+	private final static String QUEUE_NAME = "my3ndqueue";
 
 	public static void main(String[] argv)
 		throws java.io.IOException,
@@ -22,8 +22,8 @@ public class Recvr1 {
 		factory.setPassword(System.getenv("PASSCODE"));
 		Connection connection = factory.newConnection();
 		Channel channel = connection.createChannel();
-
-		channel.queueDeclare(QUEUE_NAME, false, false, false, null);
+		boolean durable = true;
+		channel.queueDeclare(QUEUE_NAME, durable, false, false, null);
 		System.out.println(" [*] Waiting for messages. To exit press CTRL+C");
 
 		QueueingConsumer consumer = new QueueingConsumer(channel);
