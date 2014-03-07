@@ -32,7 +32,7 @@ public class ReceiveLogsDirect {
 			System.exit(1);
 		}*/
 
-		for(String severity : Lists.newArrayList("info", "warning", "error")){
+		for(String severity : Lists.newArrayList("info", "warning")){
 			channel.queueBind(queueName, EXCHANGE_NAME, severity);
 		}
 
