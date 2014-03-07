@@ -26,7 +26,7 @@ public class Send {
 		channel.queueDeclare(QUEUE_NAME, durable, false, false, null);
 		int i;
 		for(i=0;i<1000;i++){
-		String message = i+ " Hello World! queue"+ new Date().toString();
+		String message = i+ " Hello World! queue : "+ new Date().toString();
 		channel.basicPublish("", QUEUE_NAME, MessageProperties.PERSISTENT_TEXT_PLAIN, message.getBytes());
 		System.out.println(" [x] Sent '" + message + "'");
 		}

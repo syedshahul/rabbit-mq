@@ -1,6 +1,6 @@
 package com.rabbit.mq.amqp;
 
-import java.io.IOException;
+import com.google.common.collect.Lists;
 import com.rabbitmq.client.ConnectionFactory;
 import com.rabbitmq.client.Connection;
 import com.rabbitmq.client.Channel;
@@ -8,8 +8,9 @@ import com.rabbitmq.client.QueueingConsumer;
 /**
  * @author: Syed Shahul
  */
-public class ReceiveLogs {
-	private static final String EXCHANGE_NAME = "logs";
+public class ReceiveLogsDirect {
+
+	private static final String EXCHANGE_NAME = "direct_logs";
 
 	public static void main(String[] argv)
 		throws java.io.IOException,
@@ -20,14 +21,20 @@ public class ReceiveLogs {
 		factory.setVirtualHost(System.getenv("VHOST"));
 		factory.setUsername(System.getenv("UNAME"));
 		factory.setPassword(System.getenv("PASSCODE"));
-
 		Connection connection = factory.newConnection();
 		Channel channel = connection.createChannel();
 
-		channel.exchangeDeclare(EXCHANGE_NAME, "fanout");
+		channel.exchangeDeclare(EXCHANGE_NAME, "direct");
 		String queueName = channel.queueDeclare().getQueue();
-		//A binding is a relationship between an exchange and a queue.
-		channel.queueBind(queueName, EXCHANGE_NAME, "");
+
+		/*if (argv.length < 1){
+			System.err.println("Usage: ReceiveLogsDirect [info] [warning] [error]");
+			System.exit(1);
+		}*/
+
+		for(String severity : Lists.newArrayList("info", "warning", "error")){
+			channel.queueBind(queueName, EXCHANGE_NAME, severity);
+		}
 
 		System.out.println(" [*] Waiting for messages. To exit press CTRL+C");
 
@@ -37,8 +44,9 @@ public class ReceiveLogs {
 		while (true) {
 			QueueingConsumer.Delivery delivery = consumer.nextDelivery();
 			String message = new String(delivery.getBody());
+			String routingKey = delivery.getEnvelope().getRoutingKey();
 
-			System.out.println(" [x] Received '" + message + "'");
+			System.out.println(" [x] Received '" + routingKey + "':'" + message + "'");
 		}
 	}
 }
