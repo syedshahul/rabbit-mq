@@ -10,15 +10,17 @@ import com.rabbitmq.client.QueueingConsumer;
  */
 public class Worker {
 	private final static String QUEUE_NAME = "my3ndqueue";
+
 	private static void doWork(String task) throws InterruptedException {
-		for (char ch: task.toCharArray()) {
-			if (ch == '.') Thread.sleep(1000);
+		for(char ch : task.toCharArray()) {
+			if(ch == '.') {
+				Thread.sleep(1000);
+			}
 		}
 	}
 
 	public static void main(String[] argv)
-		throws java.io.IOException,
-		       InterruptedException {
+		throws java.io.IOException, InterruptedException {
 
 		ConnectionFactory factory = new ConnectionFactory();
 		factory.setHost(System.getenv("HOST"));
@@ -38,12 +40,12 @@ public class Worker {
 
 		channel.basicConsume(QUEUE_NAME, autoAck, consumer);
 
-	/*	while (true) {
+		/*	while (true) {
 			QueueingConsumer.Delivery delivery = consumer.nextDelivery();
 			String message = new String(delivery.getBody());
 			System.out.println(" [x] Received '" + message + "'");
 		}*/
-		while (true) {
+		while(true) {
 			QueueingConsumer.Delivery delivery = consumer.nextDelivery();
 			String message = new String(delivery.getBody());
 

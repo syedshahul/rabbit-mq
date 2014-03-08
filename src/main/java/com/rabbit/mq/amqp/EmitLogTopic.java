@@ -3,9 +3,10 @@ package com.rabbit.mq.amqp;
 /**
  * @author: Syed Shahul
  */
-import com.rabbitmq.client.ConnectionFactory;
-import com.rabbitmq.client.Connection;
+
 import com.rabbitmq.client.Channel;
+import com.rabbitmq.client.Connection;
+import com.rabbitmq.client.ConnectionFactory;
 
 /**
  * http://www.rabbitmq.com/tutorials/tutorial-five-java.html
@@ -35,38 +36,43 @@ public class EmitLogTopic {
 			channel.basicPublish(EXCHANGE_NAME, routingKey, null, message.getBytes());
 			System.out.println(" [x] Sent '" + routingKey + "':'" + message + "'");
 
-		}
-		catch  (Exception e) {
+		} catch(Exception e) {
 			e.printStackTrace();
-		}
-		finally {
-			if (connection != null) {
+		} finally {
+			if(connection != null) {
 				try {
 					connection.close();
+				} catch(Exception ignore) {
 				}
-				catch (Exception ignore) {}
 			}
 		}
 	}
 
-	private static String getRouting(String[] strings){
-		if (strings.length < 1)
+	private static String getRouting(String[] strings) {
+		if(strings.length < 1) {
 			return "kern.sdfgsdg";
+		}
 		return strings[0];
 	}
 
-	private static String getMessage(String[] strings){
-		if (strings.length < 2)
+	private static String getMessage(String[] strings) {
+		if(strings.length < 2) {
 			return "Hello World!";
+		}
 		return joinStrings(strings, " ", 1);
 	}
 
-	private static String joinStrings(String[] strings, String delimiter, int startIndex) {
+	private static String joinStrings(String[] strings, String delimiter,
+	                                  int startIndex) {
 		int length = strings.length;
-		if (length == 0 ) return "";
-		if (length < startIndex ) return "";
+		if(length == 0) {
+			return "";
+		}
+		if(length < startIndex) {
+			return "";
+		}
 		StringBuilder words = new StringBuilder(strings[startIndex]);
-		for (int i = startIndex + 1; i < length; i++) {
+		for(int i = startIndex + 1; i < length; i++) {
 			words.append(delimiter).append(strings[i]);
 		}
 		return words.toString();

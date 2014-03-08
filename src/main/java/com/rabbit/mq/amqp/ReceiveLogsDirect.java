@@ -1,10 +1,11 @@
 package com.rabbit.mq.amqp;
 
 import com.google.common.collect.Lists;
-import com.rabbitmq.client.ConnectionFactory;
-import com.rabbitmq.client.Connection;
 import com.rabbitmq.client.Channel;
+import com.rabbitmq.client.Connection;
+import com.rabbitmq.client.ConnectionFactory;
 import com.rabbitmq.client.QueueingConsumer;
+
 /**
  * @author: Syed Shahul
  */
@@ -13,8 +14,7 @@ public class ReceiveLogsDirect {
 	private static final String EXCHANGE_NAME = "direct_logs";
 
 	public static void main(String[] argv)
-		throws java.io.IOException,
-		       java.lang.InterruptedException {
+		throws java.io.IOException, java.lang.InterruptedException {
 
 		ConnectionFactory factory = new ConnectionFactory();
 		factory.setHost(System.getenv("HOST"));
@@ -32,7 +32,7 @@ public class ReceiveLogsDirect {
 			System.exit(1);
 		}*/
 
-		for(String severity : Lists.newArrayList("info", "warning")){
+		for(String severity : Lists.newArrayList("info", "warning")) {
 			channel.queueBind(queueName, EXCHANGE_NAME, severity);
 		}
 
@@ -41,12 +41,13 @@ public class ReceiveLogsDirect {
 		QueueingConsumer consumer = new QueueingConsumer(channel);
 		channel.basicConsume(queueName, true, consumer);
 
-		while (true) {
+		while(true) {
 			QueueingConsumer.Delivery delivery = consumer.nextDelivery();
 			String message = new String(delivery.getBody());
 			String routingKey = delivery.getEnvelope().getRoutingKey();
 
-			System.out.println(" [x] Received '" + routingKey + "':'" + message + "'");
+			System.out.println(
+				" [x] Received '" + routingKey + "':'" + message + "'");
 		}
 	}
 }

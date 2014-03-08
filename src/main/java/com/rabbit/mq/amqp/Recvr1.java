@@ -12,8 +12,7 @@ public class Recvr1 {
 	private final static String QUEUE_NAME = "my3ndqueue";
 
 	public static void main(String[] argv)
-		throws java.io.IOException,
-		       InterruptedException {
+		throws java.io.IOException, InterruptedException {
 
 		ConnectionFactory factory = new ConnectionFactory();
 		factory.setHost(System.getenv("HOST"));
@@ -29,7 +28,7 @@ public class Recvr1 {
 		QueueingConsumer consumer = new QueueingConsumer(channel);
 		channel.basicConsume(QUEUE_NAME, true, consumer);
 
-		while (true) {
+		while(true) {
 			QueueingConsumer.Delivery delivery = consumer.nextDelivery();
 			String message = new String(delivery.getBody());
 			System.out.println(" [x] Recvr1 Received '" + message + "'");
